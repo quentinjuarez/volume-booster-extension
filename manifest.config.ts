@@ -5,11 +5,23 @@ import packageJson from "./package.json";
 const { version, name } = packageJson;
 
 export default defineManifest(async (env) => ({
-  name: env.mode === "staging" ? `[INTERNAL] ${name}` : name,
+  manifest_version: 3,
+  name: env.command === "serve" ? `[DEV] ${name}` : name,
   version: version,
   version_name: version,
-  manifest_version: 3,
+  icons: {
+    16: "icons/icon16.png",
+    32: "icons/icon32.png",
+    48: "icons/icon48.png",
+    128: "icons/icon128.png",
+  },
   action: {
+    default_icon: {
+      16: "icons/icon16.png",
+      32: "icons/icon32.png",
+      48: "icons/icon48.png",
+      128: "icons/icon128.png",
+    },
     default_popup: "src/popup/popup.html",
   },
   background: {
