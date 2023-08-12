@@ -1,7 +1,7 @@
 {
+  "version": "1.0.0",
   "name": "volume-booster-extension",
   "description": "Volume Booster Extension",
-  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
