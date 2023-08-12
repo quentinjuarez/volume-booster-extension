@@ -2,13 +2,14 @@ import { defineManifest } from "@crxjs/vite-plugin";
 // @ts-ignore
 import packageJson from "./package.json";
 
-const { version, name } = packageJson;
+const { version, name, description } = packageJson;
 
 export default defineManifest(async (env) => ({
   manifest_version: 3,
   name: env.command === "serve" ? `[DEV] ${name}` : name,
   version: version,
   version_name: version,
+  description: description,
   icons: {
     16: "icons/icon16.png",
     32: "icons/icon32.png",
