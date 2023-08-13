@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener((message, sender, _sendResponse) => {
-  if (message.type === "initVolume") {
+  if (message.type === "updateBadge") {
     chrome.action.setBadgeText({
       text: message.payload === null ? "" : String(message.payload),
       tabId: sender.tab?.id,

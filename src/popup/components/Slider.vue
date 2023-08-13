@@ -15,6 +15,14 @@
   </div>
   <div v-else class="flex flex-col gap-2 justify-center items-center h-full">
     No video found
+
+    <button
+      class="px-2 py-2 bg-purple-500 hover:bg-purple-600 active:bg-purple-700 rounded-sm"
+      :class="loading ? 'opacity-50 cursor-wait' : ''"
+      @click="init"
+    >
+      Refresh
+    </button>
   </div>
 </template>
 
@@ -22,18 +30,31 @@
 const focusTab = ref<chrome.tabs.Tab | undefined>(undefined);
 const volume = ref<number>(100);
 const hasNode = ref<boolean>(false);
+const loading = ref<boolean>(false);
 
 watch(volume, (newValue) => {
   updateBadge(newValue);
   sendMessage({ type: "changeVolume", payload: newValue });
 });
 
+const fakeLoading = () => {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
+};
+
+const init = () => {
+  fakeLoading();
+  sendMessage({ type: "getVolume" }, getVolume);
+  sendMessage({ type: "getNode" }, getNode);
+};
+
 onMounted(async () => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs.length > 0) {
       focusTab.value = tabs[0];
-      sendMessage({ type: "getVolume" }, getVolume);
-      sendMessage({ type: "getNode" }, getNode);
+      init();
     }
   });
 });
