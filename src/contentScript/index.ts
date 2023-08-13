@@ -7,6 +7,7 @@ let gainNode: GainNode | null = null;
 
 initializeCurrentVolume();
 initializeRequestListeners();
+initializeGainNode();
 
 function initializeRequestListeners(): void {
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
@@ -16,6 +17,14 @@ function initializeRequestListeners(): void {
 
     if (message.type === "getVolume") {
       sendResponse(currentVolume);
+    }
+
+    if (message.type === "getNode") {
+      sendResponse(gainNode);
+    }
+
+    if (message.type === "initNode") {
+      initializeGainNode();
     }
   });
 }
@@ -30,17 +39,20 @@ function initializeCurrentVolume(): void {
     currentVolume = Number(storedVolume);
     changeVolume(currentVolume);
   }
+}
 
-  chrome.runtime.sendMessage({ type: "initVolume", payload: currentVolume });
+function initializeGainNode() {
+  gainNode = gainNode || firstTimeSetUp();
 }
 
 function changeVolume(volume: number): void {
-  gainNode = gainNode || firstTimeSetUp();
-  currentVolume = volume;
-
   if (gainNode) {
+    chrome.runtime.sendMessage({ type: "initVolume", payload: currentVolume });
+    currentVolume = volume;
     gainNode.gain.value = Math.max(0, Math.min(3, currentVolume / 100));
     saveVolume(currentVolume);
+  } else {
+    chrome.runtime.sendMessage({ type: "initVolume", payload: null });
   }
 }
 
