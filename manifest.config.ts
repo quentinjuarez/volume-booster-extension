@@ -2,7 +2,8 @@ import { defineManifest } from "@crxjs/vite-plugin";
 // @ts-ignore
 import packageJson from "./package.json";
 
-const { version, name, description } = packageJson;
+const { version, description } = packageJson;
+const name = "Volume Booster Extension";
 
 export default defineManifest(async (env) => ({
   manifest_version: 3,
