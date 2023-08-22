@@ -1,4 +1,4 @@
-console.log("Volume Booster connected.");
+// console.log("Coucou Sevrain !");
 
 const VOLUME_KEY = "volume_booster_volume";
 const DEFAULT_VOLUME = 100;
